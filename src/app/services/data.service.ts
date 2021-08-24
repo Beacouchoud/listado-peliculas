@@ -1,83 +1,38 @@
 import { Injectable } from '@angular/core';
-
-export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
-}
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataService {
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    }
-  ];
 
-  constructor() { }
+  private readonly url: string;
+  private readonly apiKeyQueryParam: string;
+  private readonly langQueryParam: string;
 
-  public getMessages(): Message[] {
-    return this.messages;
+  constructor(private http: HttpClient) {
+    this.url = 'https://api.themoviedb.org/3';
+    this.apiKeyQueryParam = 'api_key=caff587bf7681f7e6b2729589b784ce6';
+    this.langQueryParam = 'language=es';
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  getQuery(url: string): Observable<any> {
+    return this.http.get(url + `${this.apiKeyQueryParam}&${this.langQueryParam}`);
+  }
+
+  public getFilms(searchTerm: string, pageNumber: number): Observable<any> {
+    const query = `${this.url}/search/movie?query=${searchTerm}/&sort_by=popularity.desc&page=${pageNumber}&`;
+    return this.getQuery(query).pipe(map(data => data));
+  }
+
+  public getFilmById(id: number): any {
+    return this.getQuery(`${this.url}/movie/${id}?`).pipe(map(data => data));
+  }
+
+  public getCurrentPopularFilms(pageNumber: number): Observable<any> {
+    return this.getQuery(`${this.url}/movie/popular?page=${pageNumber}&`).pipe(map(data => data));
   }
 }

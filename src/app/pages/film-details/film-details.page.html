@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="film">
+  <ion-item>
+    <ion-row>
+      <ion-col class="img-container ion-padding ion-margin" size="auto" >
+        <ion-img color="primary" [src]="imagePath+film.poster_path" ></ion-img>
+      </ion-col>
+      <ion-col class="ion-padding">
+        <h1>{{ film.title }}</h1>
+        <ion-chip outline>
+          <ion-icon name="star"></ion-icon>
+          <ion-label>Nota: {{ film.vote_average }}</ion-label>
+        </ion-chip>
+        <h4>Fecha de estreno: {{ film.release_date | date }}</h4>
+        <h4>Idioma original: {{ film.original_language }}</h4>
+        <div>
+          <h2>Sinopsis</h2>
+          <p>{{ film.overview }}</p>
+          <ion-badge class="ion-margin-end" *ngFor="let genre of film.genres" color="medium">{{ genre.name }}</ion-badge>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-content>
+

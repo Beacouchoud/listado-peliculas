@@ -1,0 +1,67 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DataService } from '../../services/data.service';
+import { Film } from 'src/app/models/film.model';
+import { IonInfiniteScroll } from '@ionic/angular';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+})
+export class HomePage implements OnInit{
+
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  public films: Film[] = [];
+  public page: number;
+  private totalPages: number;
+
+  constructor(private data: DataService) {}
+
+  ngOnInit() {
+    this.page = 1;
+    this.search(null);
+  }
+
+  public searchMore(searchTerm: string, event: any): void {
+    if (this.page < this.totalPages) {
+      ++this.page;
+      this.search(searchTerm, event);
+    } else {
+      this.infiniteScroll.disabled = true;
+    }
+  }
+
+  public newSearch(searchTerm: string): void {
+    this.infiniteScroll.disabled = false;
+    this.page = 1;
+    this.films = [];
+    this.search(searchTerm);
+  }
+
+  private search(searchTerm: string, event?: any): void {
+    if (!!searchTerm) {
+      this.data.getFilms(searchTerm, this.page)
+        .subscribe((data: any) => {
+          this.films = this.films.concat(data.results);
+          this.totalPages = data.total_pages;
+          event?.target.complete();
+        });
+    } else {
+      this.popularFilms(event);
+    }
+  }
+
+  private popularFilms(event?: any): void {
+    this.data.getCurrentPopularFilms(this.page)
+      .subscribe((data: any) => {
+        this.films = this.films.concat(data.results);
+        this.totalPages = data.total_pages;
+        event?.target.complete();
+      });
+  }
+
+  public get filmsList(): Film[] {
+    return this.films;
+  }
+
+}
