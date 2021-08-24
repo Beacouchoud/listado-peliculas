@@ -1,0 +1,8 @@
+{
+  "name": "Listado Peliculas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "374af06d"
+}
