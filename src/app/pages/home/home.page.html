@@ -21,8 +21,8 @@
     </div>
   </div>
 
-  <ion-list *ngIf="filmsList.length > 0">
-    <app-film *ngFor="let film of filmsList" [film]="film"></app-film>
+  <ion-list *ngIf="films.length > 0">
+    <app-film *ngFor="let film of films" [film]="film"></app-film>
   </ion-list>
   <ion-infinite-scroll threshold="50px" (ionInfinite)="searchMore(searchTerm.value, $event)">
     <ion-infinite-scroll-content

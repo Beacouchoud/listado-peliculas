@@ -22,7 +22,7 @@ export class HomePage implements OnInit{
     this.search(null);
   }
 
-  public searchMore(searchTerm: string, event: any): void {
+  public searchMore(searchTerm: string, event: any) {
     if (this.page < this.totalPages) {
       ++this.page;
       this.search(searchTerm, event);
@@ -31,14 +31,14 @@ export class HomePage implements OnInit{
     }
   }
 
-  public newSearch(searchTerm: string): void {
+  public newSearch(searchTerm: string) {
     this.infiniteScroll.disabled = false;
     this.page = 1;
     this.films = [];
     this.search(searchTerm);
   }
 
-  private search(searchTerm: string, event?: any): void {
+  private search(searchTerm: string, event?: any) {
     if (!!searchTerm) {
       this.data.getFilms(searchTerm, this.page)
         .subscribe(
@@ -55,7 +55,7 @@ export class HomePage implements OnInit{
     }
   }
 
-  private popularFilms(event?: any): void {
+  private popularFilms(event?: any) {
     this.data.getCurrentPopularFilms(this.page)
       .subscribe(
         (data: any) => {
@@ -66,10 +66,6 @@ export class HomePage implements OnInit{
         (error: any) => {
           console.log(error);
         });
-  }
-
-  public get filmsList(): Film[] {
-    return this.films;
   }
 
 }

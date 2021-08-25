@@ -22,13 +22,13 @@ export class FilmDetailsPage implements OnInit {
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.film = this.data.getFilmById(parseInt(id, 10))
+    this.data.getFilmById(parseInt(id, 10))
     .subscribe(
-      (data: any) => {
+      (data) => {
         console.log(data);
         this.film = data;
       },
-      (error: any) => {
+      (error) => {
         console.log(error);
       }
     );

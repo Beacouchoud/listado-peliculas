@@ -7,7 +7,10 @@ export interface Film {
   overview: string;
   poster_path?: string;
   vote_average?: number;
-  genres: Array<any>;
+  genres: Array<Genre>;
 }
 
-
+export interface Genre {
+  id: number;
+  name: string;
+}
