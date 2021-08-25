@@ -23,10 +23,15 @@ export class FilmDetailsPage implements OnInit {
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     this.film = this.data.getFilmById(parseInt(id, 10))
-    .subscribe((data: any) => {
-      console.log(data);
-      this.film = data;
-    });
+    .subscribe(
+      (data: any) => {
+        console.log(data);
+        this.film = data;
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   getBackButtonText() {

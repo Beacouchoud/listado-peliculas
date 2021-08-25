@@ -41,10 +41,14 @@ export class HomePage implements OnInit{
   private search(searchTerm: string, event?: any): void {
     if (!!searchTerm) {
       this.data.getFilms(searchTerm, this.page)
-        .subscribe((data: any) => {
+        .subscribe(
+        (data: any) => {
           this.films = this.films.concat(data.results);
           this.totalPages = data.total_pages;
           event?.target.complete();
+        },
+        (error: any) => {
+          console.log(error);
         });
     } else {
       this.popularFilms(event);
@@ -53,11 +57,15 @@ export class HomePage implements OnInit{
 
   private popularFilms(event?: any): void {
     this.data.getCurrentPopularFilms(this.page)
-      .subscribe((data: any) => {
-        this.films = this.films.concat(data.results);
-        this.totalPages = data.total_pages;
-        event?.target.complete();
-      });
+      .subscribe(
+        (data: any) => {
+          this.films = this.films.concat(data.results);
+          this.totalPages = data.total_pages;
+          event?.target.complete();
+        },
+        (error: any) => {
+          console.log(error);
+        });
   }
 
   public get filmsList(): Film[] {
